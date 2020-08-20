@@ -127,7 +127,7 @@ class UsuarioAirlinkU extends BaseObserver
                     "allow_user_update"=>false,
                 ]];
                 
-                $user["resource"][0]["is_active"] = 0;
+                $user["resource"][0]["is_active"] = 1;
                 $user["resource"][0]["confirm_code"] = $code;
                 $user["resource"][0]["user_to_app_to_role_by_user_id"] = [[
                     "user_id" =>  $user["resource"][0]["id"],
