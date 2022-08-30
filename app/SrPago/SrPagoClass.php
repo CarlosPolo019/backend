@@ -5,6 +5,7 @@ include_once '/home/forge/dreamfactory.technisupport.com/vendor/srpago_php/init.
 \SrPago\SrPago::$apiKey = "sk_live_5e18d5382119abd45ba1875064f33942";
 // \SrPago\SrPago::$apiSecret = "3z2NLJ?taWWN"; // Sandbox
 \SrPago\SrPago::$apiSecret = "ORcbT=JZgM5_";
+// \SrPago\SrPago::$liveMode = false; //Sandbox
 \SrPago\SrPago::$liveMode = true;
 
 class SrPago
@@ -122,8 +123,8 @@ class SrPago
     {
         $chargesService = new \SrPago\Charges();
         $data["amount"] = $amount;
-        $data["description"] = "Vanana";
-        $data["reference"] = "Pago semestral";
+        $data["description"] = $description;
+        $data["reference"] = $reference;
         $data["source"] = $source;
         $data["metadata"] = array(
             "items" => array(

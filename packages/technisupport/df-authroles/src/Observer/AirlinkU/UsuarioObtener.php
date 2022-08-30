@@ -326,11 +326,12 @@ $params = [
 
         }
 
-    //    $content=$post("airlinku/_proc/crear_reserva", ["params" =>$params]);
+    // $content=$post("airlinku/_proc/crear_reserva", ["params" =>$params]);
 	$now = new DateTime();
 	file_put_contents(storage_path()."/logs/ReservarServicio.log", json_encode("[".$now->format('d-M-Y h:m:s')."]Reservando Servicio..."),FILE_APPEND );
         $reservaId=$content["content"][0]["id_reserva"];
-        $content = ["resource" =>$content["content"]];
+	$content = ["resource" =>$content["content"]];
+	return $content;
         //SE ENVÍA EL CORREO DE NOTIFICACIÓN DE LA RESERVA
         $servicioData=$get("airlinku/_table/servicio/".$id_servicio."?fields=inicio_recogida_esperado")["content"];
         $usuarioData=$get("airlinku/_table/usuario/".$id_usuario."?fields=id%2Cprimer_nombre%2Cemail%2Cid_universidad")["content"];

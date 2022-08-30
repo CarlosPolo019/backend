@@ -50,21 +50,24 @@ class UsuarioAirlinkU extends BaseObserver
             $payload = $subject_in->getDfEvent()["request"]["payload"];
             $idUniversidad = $payload["id_universidad"];
             $email = $payload["email"];
-
+		
             if(!$idUniversidad || is_nan($idUniversidad)) {
-                throw new \Exception("Debe seleccionar universidad");
+                throw new \Exception("Debe seleccionar universidad ".$payload["iduniversidad"]);
             }
             else {
-                $result = $get("airlinku/_table/universidad/$idUniversidad?fields=dominios");
+		if($idUniversidad == 13){
+
+		 $result = $get("airlinku/_table/universidad/$idUniversidad?fields=dominios");
                 $content = $result["content"];              
                 $dominios = $content["dominios"];
                 $dominiosArr = explode(",", $dominios);
                 $partesMail = explode("@", $email);
                 $dominioMail = $partesMail[1];
                 
-                if(!in_array($dominioMail, $dominiosArr)) {
-                //   throw new \Exception("Correo no valido");
-                }
+              	   if(!in_array($dominioMail, $dominiosArr)) {
+               	     throw new \Exception("Correo no valido");
+		   }
+		}	
             }
         }  
     }
@@ -127,7 +130,7 @@ class UsuarioAirlinkU extends BaseObserver
                     "allow_user_update"=>false,
                 ]];
                 
-                $user["resource"][0]["is_active"] = 1;
+                $user["resource"][0]["is_active"] = 1;//$idUniversidad == 13 ? 0 : 1;
                 $user["resource"][0]["confirm_code"] = $code;
                 $user["resource"][0]["user_to_app_to_role_by_user_id"] = [[
                     "user_id" =>  $user["resource"][0]["id"],
@@ -136,16 +139,18 @@ class UsuarioAirlinkU extends BaseObserver
                 ]];
 
                 $res = $put("system/user",$user);
-
-                $result=$post("email?template_id=5",[
-                    "to" => [
-                        "name" => $payload["first_name"]." ".$payload["last_name"],
-                        "email" => $payload["email"]
-                    ],
-                    "first_name" => $payload["first_name"],
-                    "confirm_code" => $code
-                ]);
-            }
+	/*	if($idUniversidad == 13){
+		$id_template = $idUniversidad == 13 ? 20 : 5; 	
+               	$result=$post("email?template_id=".$id_template,[
+	         	"to" => [
+                        	"name" => $payload["first_name"]." ".$payload["last_name"],
+                        	"email" => $payload["email"]
+          	         ],
+           	         "first_name" => $payload["first_name"],
+           	         "confirm_code" => $code
+           	     ]);
+		}*/
+	    }
             //file_put_contents("/tmp/log.txt", json_encode([$result,$code]),FILE_APPEND );
             $idUsuario=$content["content"]["resource"][0]["id"];
         }
