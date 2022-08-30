@@ -1,0 +1,66 @@
+version: '2'
+services:
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dreamfactory
+      MYSQL_USER: df_admin
+      MYSQL_PASSWORD: df_admin
+    image: mysql:5.7
+  redis:
+    image: redis
+
+  web:
+    environment:
+      SERVERNAME: dreamfactory.local
+#      HTTPS_HEADER: "on"
+      # APP_KEY: VALUE
+      DB_DRIVER: mysql
+      DB_HOST: 34.68.230.11 
+      DB_USERNAME: dreamfactory
+      DB_PASSWORD: Mag4rpX01-
+      DB_DATABASE: dreamfactory
+      CACHE_DRIVER: redis
+      CACHE_HOST: redis
+      CACHE_DATABASE: 0
+      CACHE_PORT: 6379
+
+#      APP_LOG_LEVEL: debug
+#      LOG_TO_STDOUT: "true"
+#      APP_DEBUG: "true"
+
+#      Uncomment and configure to enable emailing
+#      SENDMAIL_DEFAULT_COMMAND: "/usr/sbin/sendmail -t"
+#      SSMTP_root:
+#      SSMTP_mailhub:
+#      SSMTP_AuthUser:
+#      SSMTP_AuthPass:
+#      SSMTP_UseSTARTTLS:
+#      SSMTP_UseTLS:
+#      SSMTP_AuthMethod:
+#      SSMTP_FromLineOverride:
+
+#      Uncomment to enable Logs DB
+#      LOGSDB_HOST: logsdb
+#      LOGSDB_DATABASE: access_log
+#      LOGSDB_USERNAME: mongoadmin
+#      LOGSDB_PASSWORD: password
+#      LOGSDB_ENABLED: "true"
+    volumes:
+      - df-storage:/opt/dreamfactory/storage
+    build: .
+    ports:
+      - "80:80"
+
+#  Uncomment to enable Logs DB
+#  logsdb:
+#    image: mongo:4.0-xenial
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+#      MONGO_INITDB_ROOT_PASSWORD: password
+
+volumes:
+  df-storage:
+    driver: local
+  df-mysql:
+    driver: local
